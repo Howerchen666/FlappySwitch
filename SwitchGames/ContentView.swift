@@ -35,7 +35,7 @@ struct ContentView: View {
     
     func tapGesture() {
         print("Access")
-        gameModel.matrix[0][1] = true
+        gameModel.createPoles()
     }
 }
 

@@ -10,6 +10,7 @@ import SwiftUI
 
 let rows = 9
 let columns = 10
+let numGaps = 3
 
 class GameModel: ObservableObject {
     @Published var matrix: [MatrixRow] = {
@@ -27,6 +28,19 @@ class GameModel: ObservableObject {
     func printMatrix() {
         matrix.forEach { row in
             print(row)
+        }
+    }
+    
+    func createPoles(){
+        let topPoleHeight = Int.random(in: 0..<(columns - (numGaps + 1)))
+        let bottomPoleStartPosition = topPoleHeight + numGaps
+        for i in matrix.indices{
+            if i <= topPoleHeight || i > bottomPoleStartPosition {
+                matrix[i][columns - 1] = true
+            }
+            else{
+                matrix[i][columns - 1] = false
+            }
         }
     }
 }
