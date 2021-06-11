@@ -7,40 +7,45 @@
 
 import SwiftUI
 
-// Size 10 X 9
+// Size 9 X 10
 
 struct ContentView: View {
     @StateObject var gameModel = GameModel()
     
     var body: some View {
-        VStack {
-            ForEach($gameModel.matrix) { $allRows in
-                HStack {
-                    ForEach($allRows.row) { $row in
-                        Toggle("1", isOn: $row.state)
+        ZStack {
+            VStack {
+                ForEach($gameModel.matrix) { $rows in
+                    HStack {
+                        ForEach($rows.columns) { $cell in
+                            Toggle("1", isOn: $cell.state)
+                        }
                     }
                 }
             }
-        }
-        .labelsHidden()
-        .overlay(OverlayControlView())
-        .onAppear {
-            access()
+            .labelsHidden()
+            .onChange(of: gameModel.matrix) { newValue in
+                print("Matrix changed")
+//                gameModel.printMatrix()
+            }
+            
+            OverlayControlView(onTap: tapGesture)
         }
     }
     
-    func access() {
-        gameModel.matrix[1][0] = true
+    func tapGesture() {
+        print("Access")
+        gameModel.matrix[0][1] = true
     }
 }
 
 struct OverlayControlView: View {
+    var onTap: () -> ()
+    
     var body: some View {
         Color.white
             .opacity(0.5)
-            .onTapGesture {
-                print("Tapped")
-            }
+            .onTapGesture(perform: onTap)
     }
 }
 

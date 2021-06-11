@@ -8,32 +8,64 @@
 import Foundation
 import SwiftUI
 
+let rows = 9
+let columns = 10
+
 class GameModel: ObservableObject {
-    @Published var matrix: [MatrixRow] = Array(repeating: MatrixRow(count: 10), count: 9)
+    @Published var matrix: [MatrixRow] = {
+        var result = [MatrixRow]()
+        for i in 0..<rows {
+            var matrixRow = MatrixRow()
+            for j in 0..<columns {
+                matrixRow.columns.append(false)
+            }
+            result.append(matrixRow)
+        }
+        return result
+    }()
+    
+    func printMatrix() {
+        matrix.forEach { row in
+            print(row)
+        }
+    }
 }
 
-struct MatrixRow: Identifiable {
+struct MatrixRow: Identifiable, CustomStringConvertible, Equatable {
     let id = UUID()
-    var row: [SwitchState]
-    
-    init(count: Int) {
-        row = Array(repeating: false, count: count)
-    }
+    var columns: [SwitchState] = []
     
     subscript(index: Int) -> Bool {
         get {
-            row[index].state
+            columns[index].state
         }
         set {
-            row[index].state = newValue
+            columns[index].state = newValue
         }
+    }
+    
+    /// Equatable for this class matches value rather than `id`
+    static func == (lhs: MatrixRow, rhs: MatrixRow) -> Bool {
+        return lhs.columns == rhs.columns
+    }
+    
+    var description: String {
+        return "\(columns)"
     }
 }
 
-struct SwitchState: Identifiable, ExpressibleByBooleanLiteral {
+struct SwitchState: Identifiable, Equatable, ExpressibleByBooleanLiteral, CustomStringConvertible {
     let id = UUID()
     var state: Bool
     init(booleanLiteral value: Bool) {
         self.state = value
+    }
+    
+    var description: String {
+        return state ? "1" : "0"
+    }
+    
+    static func == (lhs: SwitchState, rhs: SwitchState) -> Bool {
+        return lhs.state == rhs.state
     }
 }
