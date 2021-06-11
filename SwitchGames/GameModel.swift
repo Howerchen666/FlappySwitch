@@ -13,6 +13,9 @@ let columns = 10
 let numGaps = 3
 
 class GameModel: ObservableObject {
+    
+    var allPoles = [Pole]()
+    
     @Published var matrix: [MatrixRow] = {
         var result = [MatrixRow]()
         for i in 0..<rows {
@@ -33,18 +36,40 @@ class GameModel: ObservableObject {
     
     func createPole(){
         let topPoleHeight = Int.random(in: 0..<(columns - (numGaps + 1)))
-        let bottomPoleStartPosition = topPoleHeight + numGaps
-        for i in matrix.indices{
-            if i <= topPoleHeight || i > bottomPoleStartPosition {
-                matrix[i][columns - 1] = true
+        allPoles.append(Pole(x: columns - 1, topPoleHeight: topPoleHeight))
+    }
+    
+    func updatePole(){
+        var removePadding = 0
+        for poleIndex in allPoles.indices{
+            let accessIndex = poleIndex - removePadding
+            let pole = allPoles[accessIndex]
+            let topPoleHeight = pole.topPoleHeight
+            let columnIndex = pole.x
+            let bottomPoleStartPosition = topPoleHeight + numGaps
+            for i in matrix.indices{
+                if i <= topPoleHeight || i > bottomPoleStartPosition {
+                    matrix[i][columnIndex] = true
+                }
+                else{
+                    matrix[i][columnIndex] = false
+                }
             }
-            else{
-                matrix[i][columns - 1] = false
+            allPoles[accessIndex].x -= 1
+            if allPoles[accessIndex].x < 0{
+                allPoles.remove(at: accessIndex)
+                removePadding += 1
             }
         }
     }
 }
 
+struct Pole{
+    var x: Int
+    var topPoleHeight: Int
+    
+    
+}
 struct MatrixRow: Identifiable, CustomStringConvertible, Equatable {
     let id = UUID()
     var columns: [SwitchState] = []

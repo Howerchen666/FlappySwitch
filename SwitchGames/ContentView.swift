@@ -13,8 +13,15 @@ import Combine
 struct ContentView: View {
     @StateObject var gameModel = GameModel()
     
-    var timer: AnyPublisher<Void, Never> {
+    var createtimer: AnyPublisher<Void, Never> {
         Timer.publish(every: 3, on: .main, in: .default)
+            .autoconnect()
+            .map { _ in () }
+            .eraseToAnyPublisher()
+    }
+    
+    var updatetimer: AnyPublisher<Void, Never> {
+        Timer.publish(every: 1, on: .main, in: .default)
             .autoconnect()
             .map { _ in () }
             .eraseToAnyPublisher()
@@ -32,12 +39,11 @@ struct ContentView: View {
                 }
             }
             .labelsHidden()
-            .onChange(of: gameModel.matrix) { newValue in
-                print("Matrix changed")
-//                gameModel.printMatrix()
-            }
-            .onReceive(timer) { _ in
+            .onReceive(createtimer) { _ in
                 gameModel.createPole()
+            }
+            .onReceive(updatetimer) { _ in
+                gameModel.updatePole()
             }
             
             OverlayControlView(onTap: tapGesture)
