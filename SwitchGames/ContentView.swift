@@ -6,11 +6,19 @@
 //
 
 import SwiftUI
+import Combine
 
 // Size 9 X 10
 
 struct ContentView: View {
     @StateObject var gameModel = GameModel()
+    
+    var timer: AnyPublisher<Void, Never> {
+        Timer.publish(every: 3, on: .main, in: .default)
+            .autoconnect()
+            .map { _ in () }
+            .eraseToAnyPublisher()
+    }
     
     var body: some View {
         ZStack {
@@ -28,6 +36,9 @@ struct ContentView: View {
                 print("Matrix changed")
 //                gameModel.printMatrix()
             }
+            .onReceive(timer) { _ in
+                gameModel.createPole()
+            }
             
             OverlayControlView(onTap: tapGesture)
         }
@@ -35,7 +46,7 @@ struct ContentView: View {
     
     func tapGesture() {
         print("Access")
-        gameModel.createPoles()
+        gameModel.createPole()
     }
 }
 

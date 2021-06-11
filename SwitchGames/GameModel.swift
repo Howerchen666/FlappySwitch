@@ -31,7 +31,7 @@ class GameModel: ObservableObject {
         }
     }
     
-    func createPoles(){
+    func createPole(){
         let topPoleHeight = Int.random(in: 0..<(columns - (numGaps + 1)))
         let bottomPoleStartPosition = topPoleHeight + numGaps
         for i in matrix.indices{
