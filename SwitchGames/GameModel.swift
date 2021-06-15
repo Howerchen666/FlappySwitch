@@ -12,6 +12,7 @@ let rows = 9
 let columns = 10
 let numGaps = 3
 
+
 class GameModel: ObservableObject {
     
     var allPoles = [Pole]()
@@ -33,42 +34,51 @@ class GameModel: ObservableObject {
             print(row)
         }
     }
+    var poleGenerateCounter = 0
     
     func createPole(){
-        let topPoleHeight = Int.random(in: 0..<(columns - (numGaps + 1)))
-        allPoles.append(Pole(x: columns - 1, topPoleHeight: topPoleHeight))
+        if poleGenerateCounter <= 2{
+            let topPoleHeight = Int.random(in: 0..<(columns - (numGaps + 1)))
+            allPoles.append(Pole(isempty: true, topPoleHeight: topPoleHeight))
+        }
+        
+        else{
+            let topPoleHeight = Int.random(in: 0..<(columns - (numGaps + 1)))
+            allPoles.append(Pole(isempty: true, topPoleHeight: topPoleHeight))
+        }
+        
     }
     
     func updatePole(){
         var removePadding = 0
-        for poleIndex in allPoles.indices{
-            let accessIndex = poleIndex - removePadding
-            let pole = allPoles[accessIndex]
-            let topPoleHeight = pole.topPoleHeight
-            let columnIndex = pole.x
-            let bottomPoleStartPosition = topPoleHeight + numGaps
-            for i in matrix.indices{
-                if i <= topPoleHeight || i > bottomPoleStartPosition {
-                    matrix[i][columnIndex] = true
-                }
-                else{
-                    matrix[i][columnIndex] = false
-                }
-            }
-            allPoles[accessIndex].x -= 1
-            if allPoles[accessIndex].x < 0{
-                allPoles.remove(at: accessIndex)
-                removePadding += 1
-            }
-        }
+        
+        
+//        for poleIndex in allPoles.indices{
+//            let accessIndex = poleIndex - removePadding
+//            let pole = allPoles[accessIndex]
+//            let topPoleHeight = pole.topPoleHeight
+//            let columnIndex = pole.x
+//            let bottomPoleStartPosition = topPoleHeight + numGaps
+//            for i in matrix.indices{
+//                if i <= topPoleHeight || i > bottomPoleStartPosition {
+//                    matrix[i][columnIndex] = true
+//                }
+//                else{
+//                    matrix[i][columnIndex] = false
+//                }
+//            }
+//            allPoles[accessIndex].x -= 1
+//            if allPoles[accessIndex].x < 0{
+//                allPoles.remove(at: accessIndex)
+//                removePadding += 1
+//            }
+//        }
     }
 }
 
 struct Pole{
-    var x: Int
+    var isempty: Bool
     var topPoleHeight: Int
-    
-    
 }
 struct MatrixRow: Identifiable, CustomStringConvertible, Equatable {
     let id = UUID()

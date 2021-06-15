@@ -41,6 +41,7 @@ struct ContentView: View {
             .labelsHidden()
             .onReceive(createtimer) { _ in
                 gameModel.createPole()
+//                gameModel.updatePole()
             }
             .onReceive(updatetimer) { _ in
                 gameModel.updatePole()
