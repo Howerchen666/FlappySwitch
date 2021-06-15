@@ -34,8 +34,15 @@ struct ContentView: View {
                     print("Game Over")
                 }
             }
+            .overlay(Text("Score: " + String(gameModel.currentScore)), alignment: .topTrailing)
             
             OverlayControlView(onTap: tapGesture)
+            
+            if gameModel.gameOver {
+                GameOverView(finalScore: gameModel.currentScore)
+            }
+            
+
         }
         
     }

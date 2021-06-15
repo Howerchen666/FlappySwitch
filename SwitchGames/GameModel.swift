@@ -17,7 +17,7 @@ let distanceBetweenPoles = 3
 class GameModel: ObservableObject {
     
     var gameOver = false
-    
+    var currentScore = 0
     // MARK: Timers
     var updateTimer: AnyPublisher<Void, Never> {
         Timer.publish(every: 0.35, on: .main, in: .default)
@@ -92,6 +92,8 @@ class GameModel: ObservableObject {
                     let bottomPoleStartPosition = pole.topPoleHeight + numGaps
                     if i <= pole.topPoleHeight || i > bottomPoleStartPosition {
                         matrix[i][j] = true
+                        collisionTest(i, j)
+                        scoreCount(i, j, isempty: pole.isempty)
                     } else {
                         matrix[i][j] = false
                     }
@@ -134,7 +136,18 @@ class GameModel: ObservableObject {
         }
     }
     
-    func crashedPole(){
+    func collisionTest(_ row: Int, _ column: Int){
+        if column == 1 && row == birdPosition {
+            gameOver = true
+        }
+    }
+    
+    func scoreCount(_ row: Int, _ column: Int, isempty: Bool){
+        if row == 0 && column == 1 && isempty == false && gameOver == false{
+            print("Increment score: \(row) \(column)")
+            currentScore += 1
+            print(currentScore)
+        }
     }
 }
 
