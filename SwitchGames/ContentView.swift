@@ -13,13 +13,6 @@ import Combine
 struct ContentView: View {
     @StateObject var gameModel = GameModel()
     
-    var createtimer: AnyPublisher<Void, Never> {
-        Timer.publish(every: 3, on: .main, in: .default)
-            .autoconnect()
-            .map { _ in () }
-            .eraseToAnyPublisher()
-    }
-    
     var updatetimer: AnyPublisher<Void, Never> {
         Timer.publish(every: 1, on: .main, in: .default)
             .autoconnect()
@@ -39,12 +32,8 @@ struct ContentView: View {
                 }
             }
             .labelsHidden()
-            .onReceive(createtimer) { _ in
-                gameModel.createPole()
-//                gameModel.updatePole()
-            }
             .onReceive(updatetimer) { _ in
-                gameModel.updatePole()
+                gameModel.createPole()
             }
             
             OverlayControlView(onTap: tapGesture)
@@ -52,8 +41,7 @@ struct ContentView: View {
     }
     
     func tapGesture() {
-        print("Access")
-        gameModel.createPole()
+        print("Tapped")
     }
 }
 

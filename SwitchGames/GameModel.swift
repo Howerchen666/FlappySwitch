@@ -11,11 +11,11 @@ import SwiftUI
 let rows = 9
 let columns = 10
 let numGaps = 3
-
+let distanceBetweenPoles = 3
 
 class GameModel: ObservableObject {
     
-    var allPoles = [Pole]()
+    var allPoles = Array(repeating: Pole(isempty: true, topPoleHeight: 0), count: columns)
     
     @Published var matrix: [MatrixRow] = {
         var result = [MatrixRow]()
@@ -37,42 +37,31 @@ class GameModel: ObservableObject {
     var poleGenerateCounter = 0
     
     func createPole(){
-        if poleGenerateCounter <= 2{
-            let topPoleHeight = Int.random(in: 0..<(columns - (numGaps + 1)))
-            allPoles.append(Pole(isempty: true, topPoleHeight: topPoleHeight))
-        }
-        
-        else{
-            let topPoleHeight = Int.random(in: 0..<(columns - (numGaps + 1)))
-            allPoles.append(Pole(isempty: true, topPoleHeight: topPoleHeight))
-        }
-        
+        let newIsEmpty = poleGenerateCounter % distanceBetweenPoles == 0 ? false : true
+        poleGenerateCounter += 1
+        let topPoleHeight = Int.random(in: 0..<(columns - (numGaps + 1)))
+        let newPole = Pole(isempty: newIsEmpty, topPoleHeight: topPoleHeight)
+        allPoles.append(newPole)
+        allPoles.removeFirst()
+        updatePole()
     }
     
-    func updatePole(){
-        var removePadding = 0
-        
-        
-//        for poleIndex in allPoles.indices{
-//            let accessIndex = poleIndex - removePadding
-//            let pole = allPoles[accessIndex]
-//            let topPoleHeight = pole.topPoleHeight
-//            let columnIndex = pole.x
-//            let bottomPoleStartPosition = topPoleHeight + numGaps
-//            for i in matrix.indices{
-//                if i <= topPoleHeight || i > bottomPoleStartPosition {
-//                    matrix[i][columnIndex] = true
-//                }
-//                else{
-//                    matrix[i][columnIndex] = false
-//                }
-//            }
-//            allPoles[accessIndex].x -= 1
-//            if allPoles[accessIndex].x < 0{
-//                allPoles.remove(at: accessIndex)
-//                removePadding += 1
-//            }
-//        }
+    func updatePole() {
+        for i in 0..<rows {
+            for j in 0..<columns {
+                let pole = allPoles[j]
+                if !pole.isempty {
+                    let bottomPoleStartPosition = pole.topPoleHeight + numGaps
+                    if i <= pole.topPoleHeight || i > bottomPoleStartPosition {
+                        matrix[i][j] = true
+                    } else {
+                        matrix[i][j] = false
+                    }
+                } else {
+                    matrix[i][j] = false
+                }
+            }
+        }
     }
 }
 
