@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		653C6D1026783EBF0067D6D0 /* GameOverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653C6D0F26783EBF0067D6D0 /* GameOverView.swift */; };
+		653C6D12267842160067D6D0 /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653C6D11267842160067D6D0 /* ContainerView.swift */; };
 		D042767B26732E360005D25E /* SwitchGamesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D042767A26732E360005D25E /* SwitchGamesApp.swift */; };
 		D042767D26732E360005D25E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D042767C26732E360005D25E /* ContentView.swift */; };
 		D042767F26732E370005D25E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D042767E26732E370005D25E /* Assets.xcassets */; };
@@ -17,6 +18,7 @@
 
 /* Begin PBXFileReference section */
 		653C6D0F26783EBF0067D6D0 /* GameOverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverView.swift; sourceTree = "<group>"; };
+		653C6D11267842160067D6D0 /* ContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
 		D042767726732E360005D25E /* SwitchGames.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwitchGames.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D042767A26732E360005D25E /* SwitchGamesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchGamesApp.swift; sourceTree = "<group>"; };
 		D042767C26732E360005D25E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -58,6 +60,7 @@
 			children = (
 				D042768826732F8A0005D25E /* Info.plist */,
 				D042767A26732E360005D25E /* SwitchGamesApp.swift */,
+				653C6D11267842160067D6D0 /* ContainerView.swift */,
 				D042767C26732E360005D25E /* ContentView.swift */,
 				653C6D0F26783EBF0067D6D0 /* GameOverView.swift */,
 				D0427689267331D70005D25E /* GameModel.swift */,
@@ -145,6 +148,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				653C6D12267842160067D6D0 /* ContainerView.swift in Sources */,
 				D042767D26732E360005D25E /* ContentView.swift in Sources */,
 				D042767B26732E360005D25E /* SwitchGamesApp.swift in Sources */,
 				653C6D1026783EBF0067D6D0 /* GameOverView.swift in Sources */,
@@ -279,7 +283,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SwitchGames/Preview Content\"";
-				DEVELOPMENT_TEAM = EUX5R9PE3W;
+				DEVELOPMENT_TEAM = BUBRQTXMEC;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SwitchGames/Info.plist;
@@ -298,7 +302,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = tomandjerry.SwitchGames;
+				PRODUCT_BUNDLE_IDENTIFIER = hower.SwitchGames;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -314,7 +318,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SwitchGames/Preview Content\"";
-				DEVELOPMENT_TEAM = EUX5R9PE3W;
+				DEVELOPMENT_TEAM = BUBRQTXMEC;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SwitchGames/Info.plist;
@@ -333,7 +337,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = tomandjerry.SwitchGames;
+				PRODUCT_BUNDLE_IDENTIFIER = hower.SwitchGames;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

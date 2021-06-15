@@ -39,7 +39,7 @@ struct ContentView: View {
             OverlayControlView(onTap: tapGesture)
             
             if gameModel.gameOver {
-                GameOverView(finalScore: gameModel.currentScore)
+                GameOverView(finalScore: gameModel.currentScore, gameModel: gameModel)
             }
             
 

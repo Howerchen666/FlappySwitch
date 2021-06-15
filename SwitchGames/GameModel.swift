@@ -16,7 +16,7 @@ let distanceBetweenPoles = 3
 
 class GameModel: ObservableObject {
     
-    var gameOver = false
+    @Published var gameOver = false
     var currentScore = 0
     // MARK: Timers
     var updateTimer: AnyPublisher<Void, Never> {
@@ -57,6 +57,15 @@ class GameModel: ObservableObject {
         
         updateBirdTimer
             .sink(receiveValue: updateBird)
+            .store(in: &subscriptions)
+        
+        $gameOver
+            .dropFirst()
+            .sink { _ in
+                self.subscriptions.forEach {
+                    $0.cancel()
+                }
+            }
             .store(in: &subscriptions)
     }
     
@@ -148,6 +157,16 @@ class GameModel: ObservableObject {
             currentScore += 1
             print(currentScore)
         }
+    }
+    
+    func restart() {
+        currentScore = 0
+        dropCounter = 0
+        allPoles = Array(repeating: Pole(isempty: true, topPoleHeight: 0), count: columns)
+        birdPosition = rows / 2
+        gameOver = false
+        updatePole()
+        setup()
     }
 }
 
