@@ -13,12 +13,6 @@ import Combine
 struct ContentView: View {
     @StateObject var gameModel = GameModel()
     
-    var updatetimer: AnyPublisher<Void, Never> {
-        Timer.publish(every: 1, on: .main, in: .default)
-            .autoconnect()
-            .map { _ in () }
-            .eraseToAnyPublisher()
-    }
     
     var body: some View {
         ZStack {
@@ -32,16 +26,22 @@ struct ContentView: View {
                 }
             }
             .labelsHidden()
-            .onReceive(updatetimer) { _ in
-                gameModel.createPole()
+            .onAppear {
+                gameModel.setup()
+            }
+            .onChange(of: gameModel.gameOver) { newValue in
+                if newValue{
+                    print("Game Over")
+                }
             }
             
             OverlayControlView(onTap: tapGesture)
         }
+        
     }
     
     func tapGesture() {
-        print("Tapped")
+        gameModel.increaseBirdHeight()
     }
 }
 

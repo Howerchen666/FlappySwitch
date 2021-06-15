@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 let rows = 9
 let columns = 10
@@ -14,6 +15,26 @@ let numGaps = 3
 let distanceBetweenPoles = 3
 
 class GameModel: ObservableObject {
+    
+    var gameOver = false
+    
+    // MARK: Timers
+    var updateTimer: AnyPublisher<Void, Never> {
+        Timer.publish(every: 0.35, on: .main, in: .default)
+            .autoconnect()
+            .map { _ in () }
+            .eraseToAnyPublisher()
+    }
+    var updateBirdTimer: AnyPublisher<Void, Never> {
+        Timer.publish(every: 0.01, on: .main, in: .default)
+            .autoconnect()
+            .map { _ in () }
+            .eraseToAnyPublisher()
+    }
+    
+    var subscriptions = Set<AnyCancellable>()
+    
+    var birdPosition = rows / 2
     
     var allPoles = Array(repeating: Pole(isempty: true, topPoleHeight: 0), count: columns)
     
@@ -28,6 +49,16 @@ class GameModel: ObservableObject {
         }
         return result
     }()
+    
+    func setup() {
+        updateTimer
+            .sink(receiveValue: createPole)
+            .store(in: &subscriptions)
+        
+        updateBirdTimer
+            .sink(receiveValue: updateBird)
+            .store(in: &subscriptions)
+    }
     
     func printMatrix() {
         matrix.forEach { row in
@@ -62,6 +93,41 @@ class GameModel: ObservableObject {
                 }
             }
         }
+    }
+    
+    var dropCounter = 0
+    
+    func updateBird(){
+        if dropCounter < 30{
+            matrix[birdPosition][1] = true
+            dropCounter += 1
+        }
+        
+        else{
+            if birdPosition >= rows - 1{
+                gameOver = true
+            }
+            else{
+                matrix[birdPosition][1] = false
+                birdPosition += 1
+                matrix[birdPosition][1] = true
+                dropCounter = 0
+            }
+        }
+    }
+    
+    func increaseBirdHeight(){
+        if birdPosition <= 0{
+            gameOver = true
+        }
+        else{
+            matrix[birdPosition][1]=false
+            birdPosition -= 1
+            matrix[birdPosition][1] = true
+        }
+    }
+    
+    func crashedPole(){
     }
 }
 
