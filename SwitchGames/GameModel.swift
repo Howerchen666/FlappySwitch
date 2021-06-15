@@ -37,13 +37,20 @@ class GameModel: ObservableObject {
     var poleGenerateCounter = 0
     
     func createPole(){
-        let newIsEmpty = poleGenerateCounter % distanceBetweenPoles == 0 ? false : true
-        poleGenerateCounter += 1
+        let newIsEmpty = poleGenerateCounter == 0 ? false : true
+        incrementCounter()
         let topPoleHeight = Int.random(in: 0..<(columns - (numGaps + 1)))
         let newPole = Pole(isempty: newIsEmpty, topPoleHeight: topPoleHeight)
         allPoles.append(newPole)
         allPoles.removeFirst()
         updatePole()
+    }
+    
+    func incrementCounter() {
+        poleGenerateCounter += 1
+        if poleGenerateCounter > distanceBetweenPoles {
+            poleGenerateCounter = 0
+        }
     }
     
     func updatePole() {
