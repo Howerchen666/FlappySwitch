@@ -17,7 +17,7 @@ let distanceBetweenPoles = 3
 class GameModel: ObservableObject {
     
     @Published var gameOver = false
-    var currentScore = 0
+    @Published var currentScore = 0
     // MARK: Timers
     var updateTimer: AnyPublisher<Void, Never> {
         Timer.publish(every: 0.35, on: .main, in: .default)
@@ -25,6 +25,14 @@ class GameModel: ObservableObject {
             .map { _ in () }
             .eraseToAnyPublisher()
     }
+    
+    var updateTimerV2: AnyPublisher<Void, Never> {
+        Timer.publish(every: 0.20, on: .main, in: .default)
+            .autoconnect()
+            .map { _ in () }
+            .eraseToAnyPublisher()
+    }
+    
     var updateBirdTimer: AnyPublisher<Void, Never> {
         Timer.publish(every: 0.01, on: .main, in: .default)
             .autoconnect()
@@ -51,9 +59,15 @@ class GameModel: ObservableObject {
     }()
     
     func setup() {
-        updateTimer
-            .sink(receiveValue: createPole)
-            .store(in: &subscriptions)
+        if currentScore <= 10 {
+            updateTimer
+                .sink(receiveValue: createPole)
+                .store(in: &subscriptions)
+        } else {
+            updateTimerV2
+                .sink(receiveValue: createPole)
+                .store(in: &subscriptions)
+        }
         
         updateBirdTimer
             .sink(receiveValue: updateBird)
@@ -65,6 +79,16 @@ class GameModel: ObservableObject {
                 self.subscriptions.forEach {
                     $0.cancel()
                 }
+            }
+            .store(in: &subscriptions)
+        
+        $currentScore
+            .filter({ $0 == 10 })
+            .sink { _ in
+                self.subscriptions.forEach {
+                    $0.cancel()
+                }
+                self.setup()
             }
             .store(in: &subscriptions)
     }
@@ -153,9 +177,9 @@ class GameModel: ObservableObject {
     
     func scoreCount(_ row: Int, _ column: Int, isempty: Bool){
         if row == 0 && column == 1 && isempty == false && gameOver == false{
-            print("Increment score: \(row) \(column)")
+//            print("Increment score: \(row) \(column)")
             currentScore += 1
-            print(currentScore)
+//            print(currentScore)
         }
     }
     

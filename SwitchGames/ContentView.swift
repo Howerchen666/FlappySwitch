@@ -29,11 +29,6 @@ struct ContentView: View {
             .onAppear {
                 gameModel.setup()
             }
-            .onChange(of: gameModel.gameOver) { newValue in
-                if newValue{
-                    print("Game Over")
-                }
-            }
             .overlay(Text("Score: " + String(gameModel.currentScore)), alignment: .topTrailing)
             
             OverlayControlView(onTap: tapGesture)
@@ -62,9 +57,9 @@ struct OverlayControlView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-            .previewInterfaceOrientation(.landscapeRight)
-    }
-}
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ContentView()
+//            .previewInterfaceOrientation(.landscapeRight)
+//    }
+//}
